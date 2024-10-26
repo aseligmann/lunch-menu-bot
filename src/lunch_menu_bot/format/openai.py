@@ -14,6 +14,7 @@ def prettify(client: OpenAI, menu: str) -> str:
                 "role": "user",
                 "content": "Make this menu pretty by formatting beautifully as markdown and adding an emoji each dish and for each ingredient. "
                 + "Don't use bullets or lists, and try to keep the line count low. "
+                + "Put the main part of the dish in bold, and the rest in normal script. "
                 + "Afterwards, output it both in Danish (original) and translated to English. "
                 + "Add a delimiter between the two versions. "
                 + "Add a DK flag emoji 🇩🇰 before the danish version and a UK flag emoji 🇬🇧 before the english version. "

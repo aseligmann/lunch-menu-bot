@@ -21,25 +21,27 @@ class LunchMenuCog(commands.Cog):
     @commands.command()
     async def menu(self, ctx):
         ret = self.func_get_menu()
+        
+        message = None
+        embed = None
         if isinstance(ret, str):
-            logger.info(f"Sending message: {ret}")
-
-            # Split the message if it's too long
-            messages = [ret[i : i + 2000] for i in range(0, len(ret), 2000)]
-
-            n_messages = len(messages)
-            for i, msg in enumerate(messages):
-                logger.info(f"Send {i+1}/{n_messages}: {msg}")
-                await ctx.send(msg)
-            return
+            message = ret
         if isinstance(ret, discord.Embed):
-            logger.info(f"Sending embed: {ret}")
-            await ctx.send(embed=ret)
-            return
+            embed = ret
         if isinstance(ret, tuple):
-            logger.info(f"Sending message: {ret[0]} and embed: {ret[1]}")
-            await ctx.send(ret[0], embed=ret[1])
-            return
+            message = ret[0]
+            embed = ret[1]
+            
+        logger.info(f"Sending message: {message} and embed: {embed}")
+
+        # Split the message if it's too long
+        messages = [message[i : i + 2000] for i in range(0, len(message), 2000)]
+
+        n_messages = len(messages)
+        for i, msg in enumerate(messages):
+            msg = "@silent \n" + msg
+            logger.info(f"Send {i+1}/{n_messages}: {msg}")
+            await ctx.send(msg)
 
 
 class LunchMenuBot(commands.Bot):

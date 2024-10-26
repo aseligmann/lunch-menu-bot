@@ -1,0 +1,7 @@
+services:
+  lunch-menu-bot:
+    build: .
+    container_name: lunch-menu-bot
+    restart: unless-stopped
+    volumes:
+      - ./.secrets:/app/.secrets:ro

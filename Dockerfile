@@ -1,26 +1,33 @@
-FROM python:3.12-slim
+# Build the application
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-RUN apt-get update \
-    && apt-get install -yq --no-install-recommends \
-    python3.12 \
-    python3-pip \
-    python3-venv \
-    && apt-get clean
-
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
 WORKDIR /app
 
-COPY . /app
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project --no-dev
 
-ENV VIRTUAL_ENV="/app/venv"
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ADD . /app
 
-RUN python3 -m venv $VIRTUAL_ENV --system-site-packages && \
-    python -m pip install uv && \
-    python -m uv pip install -r requirements.lock
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev
 
-ENV PYTHONUNBUFFERED=1
 
-ENV PYTHONPATH=/app/src
+# Create the final image
+FROM python:3.12-slim-bookworm
 
-CMD ["python3", "src/lunch_menu_bot/main.py"]
+# Copy the application from the builder
+COPY --from=builder --chown=app:app /app /app
+
+# Place executables in the environment at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app/src"
+
+# Reset entrypoint
+ENTRYPOINT []
+
+# Run the application
+CMD ["python3", "/app/src/lunch_menu_bot/main.py"]

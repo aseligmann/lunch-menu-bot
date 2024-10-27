@@ -8,6 +8,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+RATE_LIMIT_SECONDS = 60  # Rate limit in seconds
+MESSAGE_SPLIT_LENGTH = 2000 - 100  # Maximum length of a message
+
+
 # Set up intents
 bot_intents = discord.Intents.default()
 bot_intents.message_content = True  # Enable message content intent if needed
@@ -18,11 +22,11 @@ class LunchMenuCog(commands.Cog):
         self.bot = bot
         self.func_get_menu = func_get_menu
 
-    @commands.cooldown(1, 60, commands.BucketType.guild)
+    @commands.cooldown(1, RATE_LIMIT_SECONDS, commands.BucketType.guild)
     @commands.command()
     async def menu(self, ctx):
         ret = self.func_get_menu()
-        
+
         message = None
         embed = None
         if isinstance(ret, str):
@@ -32,11 +36,14 @@ class LunchMenuCog(commands.Cog):
         if isinstance(ret, tuple):
             message = ret[0]
             embed = ret[1]
-            
+
         logger.info(f"Sending message: {message} and embed: {embed}")
 
         # Split the message if it's too long
-        messages = [message[i : i + 1900] for i in range(0, len(message), 1900)]
+        messages = [
+            message[i : i + MESSAGE_SPLIT_LENGTH]
+            for i in range(0, len(message), MESSAGE_SPLIT_LENGTH)
+        ]
 
         n_messages = len(messages)
         for i, msg in enumerate(messages):

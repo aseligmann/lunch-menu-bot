@@ -18,6 +18,7 @@ class LunchMenuCog(commands.Cog):
         self.bot = bot
         self.func_get_menu = func_get_menu
 
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     @commands.command()
     async def menu(self, ctx):
         ret = self.func_get_menu()

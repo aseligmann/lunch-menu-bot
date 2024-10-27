@@ -42,7 +42,14 @@ def get_menu() -> str:
         return embed_fail
     if day not in menu:
         logger.warning("No menu found for today")
-        return ("wtf no food today??", embed_confused)
+        msg = random.choice(
+            [
+                "you get nothing, try again tomorrow",
+                "wtf no food today??",
+                "maybe try wolt?",
+            ]
+        )
+        return (msg, embed_confused)
 
     logger.info("Prettifying the menu...")
 

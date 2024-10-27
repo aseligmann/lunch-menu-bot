@@ -73,7 +73,7 @@ def parse_menu_page(html_content, column_identifier):
 
         # Store the menu for each day in the menu dictionary
         for day in Day:
-            if day.value in paragraph_text:
+            if day.value.lower() in paragraph_text.lower():
                 menu[day] = paragraph_text
                 logger.info(f"Paragraph {i+1}/{n_p_elements}: Found menu for {day}...")
                 break

@@ -27,7 +27,6 @@ A Discord bot that fetches the daily lunch menu and formats it beautifully.
     Create a `.secrets` file in the root directory and add your tokens:
     ```env
     DISCORD_BOT_TOKEN=your_discord_bot_token
-    DISCORD_CHANNEL_ID=your_discord_channel_id
     OPENAI_API_KEY=your_openai_api_key
     ```
 

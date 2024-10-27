@@ -35,7 +35,7 @@ class LunchMenuCog(commands.Cog):
         logger.info(f"Sending message: {message} and embed: {embed}")
 
         # Split the message if it's too long
-        messages = [message[i : i + 2000] for i in range(0, len(message), 2000)]
+        messages = [message[i : i + 1900] for i in range(0, len(message), 1900)]
 
         n_messages = len(messages)
         for i, msg in enumerate(messages):

@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 RATE_LIMIT_SECONDS = 60  # Rate limit in seconds
-MESSAGE_SPLIT_LENGTH = 2000 - 100  # Maximum length of a message
+MESSAGE_SPLIT_LENGTH = 2000  # Maximum length of a message
 
 
 # Set up intents
@@ -47,12 +47,13 @@ class LunchMenuCog(commands.Cog):
 
         n_messages = len(messages)
         for i, msg in enumerate(messages):
-            # Prepend the message with @silent
-            msg = "@silent \n" + msg
-
             # Send the message (and embed if it's the last message)
             logger.info(f"Send {i+1}/{n_messages}: {msg}")
-            await ctx.send(msg, embed=embed if i == n_messages - 1 else None)
+            await ctx.send(
+                msg,
+                embed=embed if i == n_messages - 1 else None,
+                silent=True,
+            )
 
 
 class LunchMenuBot(commands.Bot):

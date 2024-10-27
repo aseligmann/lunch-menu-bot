@@ -47,9 +47,12 @@ class LunchMenuCog(commands.Cog):
 
         n_messages = len(messages)
         for i, msg in enumerate(messages):
+            # Prepend the message with @silent
             msg = "@silent \n" + msg
+
+            # Send the message (and embed if it's the last message)
             logger.info(f"Send {i+1}/{n_messages}: {msg}")
-            await ctx.send(msg)
+            await ctx.send(msg, embed=embed if i == n_messages - 1 else None)
 
 
 class LunchMenuBot(commands.Bot):

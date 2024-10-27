@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # load .env file
 config = dotenv_values(".secrets")
 DISCORD_BOT_TOKEN = config["DISCORD_BOT_TOKEN"]
-DISCORD_CHANNEL_ID = config["DISCORD_CHANNEL_ID"]
+# DISCORD_CHANNEL_ID = config["DISCORD_CHANNEL_ID"]
 OPENAI_API_KEY = config["OPENAI_API_KEY"]
 
 openai_client = get_client(OPENAI_API_KEY)

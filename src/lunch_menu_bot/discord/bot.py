@@ -49,10 +49,11 @@ class LunchMenuCog(commands.Cog):
         for i, msg in enumerate(messages):
             # Send the message (and embed if it's the last message)
             logger.info(f"Send {i+1}/{n_messages}: {msg}")
-            await ctx.send(
+            await ctx.reply(
                 msg,
                 embed=embed if i == n_messages - 1 else None,
                 silent=True,
+                mention_author=False,
             )
 
 

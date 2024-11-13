@@ -12,14 +12,18 @@ def prettify(client: OpenAI, menu: str) -> str:
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": "Make this menu pretty by formatting beautifully as markdown (but do not put it inside a code block, just inline text) and adding an emoji each dish and for each ingredient. "
-                + "Don't use bullets or lists, and try to keep the line count low. "
+                "content": ""
+                + "Make this menu pretty by formatting beautifully as markdown. "
+                + "Your output will be appended directly to a markdown file. "
                 + "Put the main part of the dish in bold, and the rest in normal script. "
+                + "Add a single emoji at the beginning of each line, associated with the main dish described on the line. "
                 + "Afterwards, output it both in Danish (original) and translated to English. "
                 + "Add a delimiter between the two versions. "
                 + "Add a DK flag emoji 🇩🇰 before the danish version and a UK flag emoji 🇬🇧 before the english version. "
-                + "Make very sure not to change any of the content! "
+                + "Don't use bullets or lists, and try to keep the line count low. "
+                + "DO NOT PUT THE TEXT INSIDE A CODE BLOCK, KEEP IT AS INLINE MARKDOWN. "
                 + "DO NOT OUTPUT ANYTHING OTHER THAN THE MENU. "
+                + "Make very sure not to change any of the menu content! "
                 + "The menu is as follows:\n\n"
                 + menu,
             },

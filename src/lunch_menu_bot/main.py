@@ -39,14 +39,21 @@ def get_menu() -> str:
     # Check validity
     if menu is None:
         logger.error("No menu found")
-        return embed_fail
+        msg = random.choice(
+            [
+                "¯\_(ツ)_/¯ ",
+                "wtf no food today??",
+                "maybe try wolt?",
+            ]
+        )
+        return (msg, embed_fail)
     if day not in menu:
         logger.warning("No menu found for today")
         msg = random.choice(
             [
                 "you get nothing, try again tomorrow",
-                "wtf no food today??",
-                "maybe try wolt?",
+                "looks like the chef took a day off",
+                "check mia channel for menu",
             ]
         )
         return (msg, embed_confused)

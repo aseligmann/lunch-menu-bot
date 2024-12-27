@@ -32,6 +32,7 @@ class LunchMenuCog(commands.Cog):
         if isinstance(ret, str):
             message = ret
         if isinstance(ret, discord.Embed):
+            message = "huh?"
             embed = ret
         if isinstance(ret, tuple):
             message = ret[0]

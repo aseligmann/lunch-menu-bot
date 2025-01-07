@@ -34,11 +34,11 @@ def parse_menu_page(html_content, column_identifier):
     soup = BeautifulSoup(html_content, "html.parser")
 
     # Find all div element with data-element_type="column"
-    columns = soup.find_all("div", {"data-element_type": "column"})
+    columns = soup.find_all("div", {"data-widget_type": "text-editor.default"})
+    logger.debug(f"Found {len(columns)} columns.")
     if columns is None:
         logger.warning("No columns found with data-element_type='column'.")
         return None
-    logger.debug(f"Found {len(columns)} columns.")
 
     # Select the column which contains week_str
     week_menu_column = None

@@ -1,7 +1,7 @@
 import logging
 import random
-from lunch_menu_bot.discord.bot import LunchMenuBot
-from lunch_menu_bot.discord.embeds import (
+from lunch_menu_bot.integrations.discord.bot import LunchMenuBot
+from lunch_menu_bot.integrations.discord.embeds import (
     embed_confused,
     embed_fail,
     embed_chicken1,

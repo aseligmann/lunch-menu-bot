@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import logging
 
+from lunch_menu_bot.integrations.discord.embeds import EmbedFactory
+
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
@@ -27,16 +29,13 @@ class LunchMenuCog(commands.Cog):
     async def menu(self, ctx):
         ret = self.func_get_menu()
 
-        message = None
+        message = ret[0]
+        embed_url = ret[1]
+        logger.debug(f"Received message: {message}")
+        logger.debug(f"Received embed: {embed_url}")
         embed = None
-        if isinstance(ret, str):
-            message = ret
-        if isinstance(ret, discord.Embed):
-            message = "huh?"
-            embed = ret
-        if isinstance(ret, tuple):
-            message = ret[0]
-            embed = ret[1]
+        if embed_url is not None:
+            embed = EmbedFactory.create_embed_from_url(embed_url)
 
         logger.info(f"Sending message: {message} and embed: {embed}")
 

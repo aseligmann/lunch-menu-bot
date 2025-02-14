@@ -1,3 +1,4 @@
+from typing import Optional
 import requests
 from lunch_menu_bot.time.time import Day
 from bs4 import BeautifulSoup
@@ -24,7 +25,7 @@ def fetch_menu_page():
     return html_content
 
 
-def parse_menu_page(html_content, column_identifier):
+def parse_menu_page(html_content, column_identifier) -> Optional[dict[Day, str]]:
     logger.info("Starting to parse the menu.")
     if html_content is None:
         logger.warning("No HTML content found.")

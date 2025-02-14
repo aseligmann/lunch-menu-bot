@@ -1,18 +1,23 @@
+import random
 import discord
 from lunch_menu_bot.integrations.constants import EMBED_GIFS
 
 
-embed_confused = discord.Embed()
-embed_confused.set_image(url=EMBED_GIFS["confused"])
+class EmbedFactory:
+    @staticmethod
+    def create_embed_from_type(embed_type: str) -> discord.Embed:
+        embed = discord.Embed()
+        urls = {
+            "confused": random.choice(EMBED_GIFS["confused"]),
+            "fail": random.choice(EMBED_GIFS["fail"]),
+            "chicken": random.choice(EMBED_GIFS["chicken"]),
+        }
+        if url := urls.get(embed_type):
+            embed.set_image(url=url)
+        return embed
 
-embed_fail = discord.Embed()
-embed_fail.set_image(url=EMBED_GIFS["fail"])
-
-embed_chicken1 = discord.Embed()
-embed_chicken1.set_image(url=EMBED_GIFS["chicken"][0])
-
-embed_chicken2 = discord.Embed()
-embed_chicken2.set_image(url=EMBED_GIFS["chicken"][1])
-
-embed_chicken3 = discord.Embed()
-embed_chicken3.set_image(url=EMBED_GIFS["chicken"][2])
+    @staticmethod
+    def create_embed_from_url(url: str) -> discord.Embed:
+        embed = discord.Embed()
+        embed.set_image(url=url)
+        return embed

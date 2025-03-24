@@ -5,3 +5,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./.secrets:/app/.secrets:ro
+    environment:
+      - RUN_SLACK=true  # Set to "true" to enable Slack integration
+      - RUN_DISCORD=true  # Set to "true" to enable Discord bot

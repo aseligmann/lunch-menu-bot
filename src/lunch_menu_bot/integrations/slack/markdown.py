@@ -6,7 +6,7 @@ REGEX_REPLACE = (
     (re.compile("^    - ", flags=re.M), "    ⬩ "),  # ◆
     (re.compile("^      - ", flags=re.M), "    ◽ "),
     (re.compile("^#+ (.+)$", flags=re.M), r"*\1*"),
-    (re.compile("\*\*"), "*"),
+    (re.compile(r"\*\*"), "*"),
 )
 
 

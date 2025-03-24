@@ -31,5 +31,5 @@ WORKDIR /app
 # Reset entrypoint
 ENTRYPOINT []
 
-# Run the application
+# Run the application - environment variables are read directly in the script
 CMD ["python3", "/app/src/lunch_menu_bot/main.py"]

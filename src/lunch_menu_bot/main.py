@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import random
+import os
 from typing import Optional
 import schedule
 from dotenv import dotenv_values
@@ -74,39 +75,53 @@ def get_menu() -> tuple[str, Optional[str]]:
 
 
 async def main():
+    # Read integration selection from environment variables
+    run_slack = os.environ.get("RUN_SLACK", "true").lower() == "true"
+    run_discord = os.environ.get("RUN_DISCORD", "true").lower() == "true"
+
+    # Log what's being run
+    logger.info(f"Running with: Slack={run_slack}, Discord={run_discord}")
+
     try:
+        tasks = []
 
-        async def slack_webhook_scheduler():
-            def slack_get_and_post_menu():
-                msg, img_url = get_menu()
-                slack_webhook.post_message(msg, img_url)
+        if run_slack:
 
-            # Schedule job for 11:30 AM UTC+1 on weekdays
-            t = "11:30"
-            tz = "Europe/Copenhagen"
-            schedule.every().monday.at(t, tz=tz).do(slack_get_and_post_menu)
-            schedule.every().tuesday.at(t, tz=tz).do(slack_get_and_post_menu)
-            schedule.every().wednesday.at(t, tz=tz).do(slack_get_and_post_menu)
-            schedule.every().thursday.at(t, tz=tz).do(slack_get_and_post_menu)
-            schedule.every().friday.at(t, tz=tz).do(slack_get_and_post_menu)
+            async def slack_webhook_scheduler():
+                def slack_get_and_post_menu():
+                    msg, img_url = get_menu()
+                    slack_webhook.post_message(msg, img_url)
 
-            while True:
-                schedule.run_pending()
-                await asyncio.sleep(60)
+                # Schedule job for 11:30 AM UTC+1 on weekdays
+                t = "11:30"
+                tz = "Europe/Copenhagen"
+                schedule.every().monday.at(t, tz=tz).do(slack_get_and_post_menu)
+                schedule.every().tuesday.at(t, tz=tz).do(slack_get_and_post_menu)
+                schedule.every().wednesday.at(t, tz=tz).do(slack_get_and_post_menu)
+                schedule.every().thursday.at(t, tz=tz).do(slack_get_and_post_menu)
+                schedule.every().friday.at(t, tz=tz).do(slack_get_and_post_menu)
 
-        # Start the Slack webhook scheduler
-        logger.info("Starting Slack lunch menu scheduler...")
-        slack_webhook_task_handle = asyncio.create_task(slack_webhook_scheduler())
+                while True:
+                    schedule.run_pending()
+                    await asyncio.sleep(60.0)
 
-        # Start the Discord bot
-        logger.info("Starting Discord lunch menu bot...")
-        bot = LunchMenuBot(func_get_menu=get_menu)
+            # Start the Slack webhook scheduler
+            logger.info("Starting Slack lunch menu scheduler...")
+            slack_webhook_task_handle = asyncio.create_task(slack_webhook_scheduler())
+            tasks.append(slack_webhook_task_handle)
 
-        # Start the bot and the schedule checker
-        discord_bot_task_handle = asyncio.create_task(bot.start(DISCORD_BOT_TOKEN))
+        if run_discord:
+            # Start the Discord bot
+            logger.info("Starting Discord lunch menu bot...")
+            bot = LunchMenuBot(func_get_menu=get_menu)
+            discord_bot_task_handle = asyncio.create_task(bot.start(DISCORD_BOT_TOKEN))
+            tasks.append(discord_bot_task_handle)
 
-        # Wait for both tasks to complete
-        await asyncio.gather(discord_bot_task_handle, slack_webhook_task_handle)
+        if tasks:
+            # Wait for all active tasks to complete
+            await asyncio.gather(*tasks)
+        else:
+            logger.warning("No integrations selected. Exiting...")
 
     except Exception as e:
         logger.error(f"An error occurred: {e}")

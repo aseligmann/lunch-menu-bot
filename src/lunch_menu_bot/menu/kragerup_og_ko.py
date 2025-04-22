@@ -87,6 +87,7 @@ def parse_menu_page(html_content, column_identifier) -> Optional[dict[Day, str]]
         f"Did not find any menu for the following days: {[day for day, text in menu.items() if text is None]}"
     )
     logger.info("Finished parsing the menu.")
+    logger.debug(f"Menu: {menu}")
 
     return menu
 

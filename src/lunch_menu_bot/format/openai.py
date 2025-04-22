@@ -14,6 +14,9 @@ def prettify(client: OpenAI, menu: str) -> str:
                 "role": "user",
                 "content": ""
                 + "Make this menu pretty by formatting beautifully as markdown. "
+                + "If the menu does not contain any dishes, then ignore all the following instructions and do not output any menu. "
+                + "Instead output a message saying 'no food today, sucka'. "
+                + "If the menu contains any dishes, then output the menu according to the instructions below. "
                 + "Your output will be appended directly to a markdown file. "
                 + "Put the main part of the dish in bold, and the rest in normal script. "
                 + "Add a single emoji at the beginning of each line, associated with the main dish described on the line. "

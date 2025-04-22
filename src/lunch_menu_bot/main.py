@@ -131,4 +131,8 @@ async def main():
 
 
 if __name__ == "__main__":
+    # message, embed = get_menu()
+    # logger.info(f"Message: {message}")
+    # logger.info(f"Embed: {embed}")
+
     asyncio.run(main())

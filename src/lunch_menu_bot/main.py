@@ -39,24 +39,12 @@ def get_menu() -> tuple[str, Optional[str]]:
     # Check validity
     if menu is None:
         logger.error("No menu found")
-        msg = random.choice(
-            [
-                "¯\\_(ツ)_/¯ ",
-                "wtf no food today??",
-                "maybe try wolt?",
-            ]
-        )
-        return (msg, random.choice(EMBED_GIFS["fail"]))
+        msg = "¯\\_(ツ)_/¯ no menu available"
+        return (msg, None)
     if day not in menu:
         logger.warning("No menu found for today")
-        msg = random.choice(
-            [
-                "you get nothing, try again tomorrow",
-                "looks like the chef took a day off",
-                "check mia channel for menu",
-            ]
-        )
-        return (msg, random.choice(EMBED_GIFS["confused"]))
+        msg = "looks like the chef took a day off 🥺"
+        return (msg, None)
 
     logger.info("Prettifying the menu...")
 
@@ -67,7 +55,8 @@ def get_menu() -> tuple[str, Optional[str]]:
     logger.info(f"Prettified menu for {day}: {menu_pretty}")
 
     embed = None
-    if "hønsesalat" in menu_raw.lower():  # hønse alert?
+    alert_keywords = ["hønsesalat", "kyllingesalat"]
+    if any(keyword in menu_raw.lower() for keyword in alert_keywords):  # hønse alert?
         # EXTREME importance fucking spread the word SEND IT !!!
         embed = random.choice(EMBED_GIFS["chicken"])
 

@@ -67,7 +67,8 @@ def get_menu() -> tuple[str, Optional[str]]:
     logger.info(f"Prettified menu for {day}: {menu_pretty}")
 
     embed = None
-    if "hønsesalat" in menu_raw.lower():  # hønse alert?
+    alert_keywords = ["hønsesalat", "kyllingesalat"]
+    if any(keyword in menu_raw.lower() for keyword in alert_keywords):  # hønse alert?
         # EXTREME importance fucking spread the word SEND IT !!!
         embed = random.choice(EMBED_GIFS["chicken"])
 

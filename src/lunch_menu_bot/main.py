@@ -41,7 +41,7 @@ def get_menu() -> tuple[str, Optional[str]]:
         logger.error("No menu found")
         msg = "¯\\_(ツ)_/¯ no menu available"
         return (msg, None)
-    if day not in menu:
+    if day not in menu or menu[day] is None:
         logger.warning("No menu found for today")
         msg = "looks like the chef took a day off 🥺"
         return (msg, None)

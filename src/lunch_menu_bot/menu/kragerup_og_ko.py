@@ -25,7 +25,9 @@ def fetch_menu_page():
     return html_content
 
 
-def parse_menu_page(html_content, column_identifier) -> Optional[dict[Day, str]]:
+def parse_menu_page(
+    html_content, column_identifier
+) -> Optional[dict[Day, Optional[str]]]:
     logger.info("Starting to parse the menu.")
     if html_content is None:
         logger.warning("No HTML content found.")

@@ -109,8 +109,9 @@ if __name__ == "__main__":
 
     day = Day.FRIDAY
 
-    if day not in menu:
-        print("No menu found for today")
+    if day not in menu or menu[day] is None:
+        msg = "looks like the chef took a day off 🥺"
+        logger.warning("No menu found for today. " + msg)
         exit()
 
     print(menu[day])

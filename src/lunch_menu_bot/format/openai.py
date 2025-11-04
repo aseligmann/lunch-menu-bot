@@ -6,34 +6,27 @@ def get_client(api_key: str):
 
 
 def prettify(client: OpenAI, menu: str) -> str:
-    completion = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {
-                "role": "user",
-                "content": ""
-                + "Make this menu pretty by formatting beautifully as markdown. "
-                + "If the menu does not contain any dishes, then ignore all the following instructions and do not output any menu. "
-                + "Instead output a message saying 'i couldn't understand the menu :^('. "
-                + "If the menu contains any dishes, then output the menu according to the instructions below. "
-                + "Your output will be appended directly to a markdown file. "
-                + "Put the main part of the dish in bold, and the rest in normal script. "
-                + "Add a single emoji at the beginning of each line, associated with the main dish described on the line. "
-                + "Afterwards, output it both in Danish (original) and translated to English. "
-                + "Add a delimiter between the two versions. "
-                + "Add a DK flag emoji 🇩🇰 before the danish version and a UK flag emoji 🇬🇧 before the english version. "
-                + "Don't use bullets or lists, and try to keep the line count low. "
-                + "DO NOT PUT THE TEXT INSIDE A CODE BLOCK, KEEP IT AS INLINE MARKDOWN. "
-                + "DO NOT OUTPUT ANYTHING OTHER THAN THE MENU. "
-                + "Make very sure not to change any of the menu content! "
-                + "The menu is as follows:\n\n"
-                + menu,
-            },
-        ],
+    response = client.responses.create(
+        model="gpt-5-chat-latest",
+        instructions=""
+        + "You are a helpful lunch menu formatting assistant.\n"
+        + "Format the provided menu using Markdown, applying these rules consistently:\n"
+        + "- If the menu does not include any dishes, output only: 'i couldn't understand the menu :^('.\n"
+        + "- If dishes are present, format as follows:\n"
+        + "  - Output will be appended directly to a Markdown file.\n"
+        + "  - Present the Danish (original) version above the English translation.\n"
+        + "  - Prepend the Danish version with the 🇩🇰 DK flag emoji and the English version with the 🇬🇧 UK flag emoji.\n"
+        + "  - Separate the two versions with a '---' Markdown delimiter.\n"
+        + "  - Begin each dish with a single emoji representing the main dish.\n"
+        + "  - Use bold formatting for the main part of each dish-name; any additional information appears in regular script on the same line. Avoid bolding the entire line.\n"
+        + "  - Avoid using lists or bullet points.\n"
+        + "  - Minimize line usage.\n"
+        + "  - Do not use code blocks; all formatting is inline Markdown.\n"
+        + "  - Do not output anything but the menu, no extra commentary or formatting notes.\n"
+        + "  - Preserve all menu content exactly as provided.",
+        input=menu,
     )
-    # Return only the new string
-    return completion.choices[0].message.content
+    return response.output_text
 
 
 def remove_empty_lines(text: str) -> str:

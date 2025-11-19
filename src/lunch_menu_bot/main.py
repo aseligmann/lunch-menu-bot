@@ -51,7 +51,11 @@ def get_menu() -> tuple[str, Optional[str]]:
     menu_raw = menu[day]
     logger.info(f"Menu for {day}: {menu_raw}")
 
-    menu_pretty = remove_empty_lines(prettify(openai_client, menu_raw))
+    menu_pretty_raw = prettify(openai_client, menu_raw)
+    logger.info(
+        f"Raw prettified menu for {day}: {menu_pretty_raw.replace("\n", "\\n")}"
+    )
+    menu_pretty = remove_empty_lines(menu_pretty_raw)
     logger.info(f"Prettified menu for {day}: {menu_pretty}")
 
     embed = None

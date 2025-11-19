@@ -20,7 +20,7 @@ def prettify(client: OpenAI, menu: str) -> str:
         + "  - Begin each dish with a single emoji representing the main dish.\n"
         + "  - Use bold formatting for the main part of each dish-name; any additional information appears in regular script on the same line. Avoid bolding the entire line.\n"
         + "  - Avoid using lists or bullet points.\n"
-        + "  - Minimize line usage.\n"
+        + "  - Minimize line usage, but retain a line-break after each dish.\n"
         + "  - Do not use code blocks; all formatting is inline Markdown.\n"
         + "  - Do not output anything but the menu, no extra commentary or formatting notes.\n"
         + "  - Preserve all menu content exactly as provided.",

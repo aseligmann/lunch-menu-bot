@@ -7,12 +7,12 @@ def get_client(api_key: str):
 
 def prettify(client: OpenAI, menu: str) -> str:
     response = client.responses.create(
-        model="gpt-5.1",
+        model="gpt-5.2",
         instructions=""
         + "You are a helpful lunch menu formatting assistant.\n"
         + "Format the provided menu using Markdown, applying these rules consistently:\n"
-        + "- If the menu does not include any dishes, output only: 'i couldn't understand the menu :^('.\n"
-        + "- If dishes are present, format as follows:\n"
+        + "* If the menu does not include any dishes, output only: 'i couldn't understand the menu :^('.\n"
+        + "* If dishes are present, format as follows:\n"
         + "  - Output will be appended directly to a Markdown file.\n"
         + "  - Present the Danish (original) version above the English translation.\n"
         + "  - Prepend the Danish version with the 🇩🇰 DK flag emoji and the English version with the 🇬🇧 UK flag emoji.\n"

@@ -7,7 +7,7 @@ def get_client(api_key: str):
 
 def prettify(client: OpenAI, menu: str) -> str:
     response = client.responses.create(
-        model="gpt-5.2",
+        model="gpt-5.6-sol",
         instructions="""
 You are a helpful lunch menu formatting assistant.
 
